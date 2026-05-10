@@ -1,0 +1,42 @@
+[package]
+name = "aws-sso-credentials"
+version = "0.1.0-alpha"
+edition = "2024"
+description = "AWS credentials_process that automatically prompts for SSO"
+license = "MIT"
+repository = "https://github.com/redoapp/aws-sso-credentials"
+readme = "README.md"
+
+[dependencies]
+anyhow = "1"
+aws-config = "1"
+aws-credential-types = "1"
+aws-runtime = "1"
+aws-types = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "process", "rt", "time"] }
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
+
+[package.metadata.deb]
+maintainer = "Paul Draper <paul@getredo.com>"
+section = "utils"
+priority = "optional"
+recommends = "awscli"
+assets = [
+    ["target/release/aws-sso-credentials", "usr/bin/", "755"],
+    ["README.md", "usr/share/doc/aws-sso-credentials/README.md", "644"],
+    ["LICENSE.txt", "usr/share/doc/aws-sso-credentials/LICENSE.txt", "644"],
+]
+
+[package.metadata.generate-rpm]
+assets = [
+    { source = "target/release/aws-sso-credentials", dest = "/usr/bin/aws-sso-credentials", mode = "755" },
+    { source = "README.md", dest = "/usr/share/doc/aws-sso-credentials/README.md", mode = "644", doc = true },
+    { source = "LICENSE.txt", dest = "/usr/share/doc/aws-sso-credentials/LICENSE.txt", mode = "644", doc = true },
+]

@@ -1,0 +1,159 @@
+env:
+  BINARY: aws-sso-credentials
+  CARGO_TERM_COLOR: always
+jobs:
+  build:
+    env:
+      TARGET: ${{ matrix.target }}
+      USE_CROSS: ${{ matrix.use_cross }}
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run: scripts/output-version.sh
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+      - if: matrix.use_cross
+        name: Install cross
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cross
+      - if: matrix.deb_arch
+        name: Install cargo-deb and cargo-generate-rpm
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deb,cargo-generate-rpm
+      - run: scripts/build.sh
+      - env:
+          VERSION: ${{ steps.version.outputs.version }}
+        name: Package tarball
+        run: scripts/package-tarball.sh
+      - env:
+          DEB_ARCH: ${{ matrix.deb_arch }}
+          VERSION: ${{ steps.version.outputs.version }}
+        if: matrix.deb_arch
+        name: Build .deb
+        run: scripts/build-deb.sh
+      - env:
+          RPM_ARCH: ${{ matrix.rpm_arch }}
+          VERSION: ${{ steps.version.outputs.version }}
+        if: matrix.rpm_arch
+        name: Build .rpm
+        run: scripts/build-rpm.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: dist-${{ matrix.target }}
+          path: dist/
+          retention-days: 7
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - deb_arch: amd64
+            os: ubuntu-22.04
+            rpm_arch: x86_64
+            target: x86_64-unknown-linux-gnu
+            use_cross: false
+          - deb_arch: arm64
+            os: ubuntu-22.04
+            rpm_arch: aarch64
+            target: aarch64-unknown-linux-gnu
+            use_cross: true
+          - os: macos-13
+            target: x86_64-apple-darwin
+            use_cross: false
+          - os: macos-14
+            target: aarch64-apple-darwin
+            use_cross: false
+  homebrew:
+    name: Update Homebrew formula
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: dist
+      - env:
+          VERSION: ${{ needs.release.outputs.version }}
+        name: Rewrite formula
+        run: scripts/update-homebrew-formula.sh
+      - env:
+          VERSION: ${{ needs.release.outputs.version }}
+        name: Commit and push
+        run: scripts/commit-formula.sh
+  nix:
+    name: Verify Nix flake
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - run: nix build --print-build-logs
+  pages:
+    name: Publish APT/YUM repos
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: dist
+      - name: Install repo tools
+        run: scripts/install-repo-tools.sh
+      - name: Check out gh-pages
+        run: scripts/checkout-gh-pages.sh
+      - name: Assemble APT repo
+        run: scripts/build-apt-repo.sh
+      - name: Assemble YUM repo
+        run: scripts/build-yum-repo.sh
+      - name: Write landing page
+        run: scripts/write-pages-index.sh
+      - env:
+          VERSION: ${{ needs.release.outputs.version }}
+        name: Commit and push gh-pages
+        run: scripts/commit-pages.sh
+  release:
+    name: GitHub Release
+    needs: build
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run: scripts/output-version.sh
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: dist
+      - run: scripts/aggregate-checksums.sh
+      - uses: softprops/action-gh-release@v2
+        with:
+          fail_on_unmatched_files: true
+          files: |
+            dist/*.tar.gz
+            dist/*.tar.gz.sha256
+            dist/*.deb
+            dist/*.rpm
+            dist/SHA256SUMS
+          generate_release_notes: true
+name: Release
+on:
+  push:
+    tags:
+      - "v*"
+permissions:
+  contents: write

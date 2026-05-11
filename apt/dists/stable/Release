@@ -1,0 +1,32 @@
+Architectures: amd64 arm64
+Codename: stable
+Components: main
+Date: Mon, 11 May 2026 01:11:35 +0000
+Description: Redo APT repository
+Label: Redo
+Origin: Redo
+Suite: stable
+MD5Sum:
+ 1ed2f783d0d09c3423da2a3707725cb8              171 Release
+ 680dd31f1bd11b2c2807773e28e787ec             5514 main/binary-amd64/Packages
+ 1886058a353972eea9f6f4aefdc588cd             2658 main/binary-amd64/Packages.gz
+ cde50e30959681f8bdf94b2ad508af17             5498 main/binary-arm64/Packages
+ 0baac3c987c8601707ae9ae5aa398f4f             2640 main/binary-arm64/Packages.gz
+SHA1:
+ 13ba108373e01555de21a81a3c79ef85a9b0c335              171 Release
+ 16fb50bdc7c68cfe523f3c0517bb4deaaab836d2             5514 main/binary-amd64/Packages
+ 84f4e57e0feddc430f9f18b2c9acda5105ed821f             2658 main/binary-amd64/Packages.gz
+ 631e6760a5df41ddef12a593941af40d5e9f44df             5498 main/binary-arm64/Packages
+ b2001063630a295c91b6b7ca746286b18a370938             2640 main/binary-arm64/Packages.gz
+SHA256:
+ 5d65028d8752e3db6bf5a18eaf7fb45568d6a17eb8189037774eba7dfdcb1ff2              171 Release
+ 8b513e6f76e9a21166819fb429cc377ca26ea84d5bc5516b9776ab6b01918855             5514 main/binary-amd64/Packages
+ 5a23666cc80fcda27c7775e765a5c41b19fd10fcb7cca92452113b9d2250f17e             2658 main/binary-amd64/Packages.gz
+ d01a02a3ea632e9cb08abb4f59d87b5a6d3950eb4c223d6d63a8d7158470c759             5498 main/binary-arm64/Packages
+ 4c7f2c67f241460276c0040978bea0f59de54e2d305dd388eb3c10bae61f22f0             2640 main/binary-arm64/Packages.gz
+SHA512:
+ c1f988037bed3f116fe845a44551a412680466a006a79fb69d7fe16fb26462ecb1f49c1d02cec443f3d22b17caf7dd0c7ec7f6a17d322aa0cd7532aa78912fe6              171 Release
+ 0d1e75efc5effe662b9ccdf75760c6e08ee1c21f25f0a6681fce01d66d3d5a2d8cbf044bff4848c829718463a678a2a4b736a2364dd5c96d94358577f26426bf             5514 main/binary-amd64/Packages
+ 7f7aefae67cd8e986a5c0f38405cf92a58998be27cbcedde4bb3d95cea252d171a45f0a23e27f73fd8251548d214637a445bc34eafd14456e496e02d46e621bb             2658 main/binary-amd64/Packages.gz
+ b91c155a2d108fa03652e3c54565848cae15d3dd127d5f28ed47950a844758d588c3b3107582216dea5de6d74fd4354f21e7148c9933c950fe6b6b677c8bbdc9             5498 main/binary-arm64/Packages
+ addf6c9b5bbbcbe87423051566d38f7b83ecae7afd9a86b6eb8f0a056a682e9a566e0d9a20511c1673e3c7d2b0cf9bc7701e11a8d29931b3752b3c35856a70b2             2640 main/binary-arm64/Packages.gz

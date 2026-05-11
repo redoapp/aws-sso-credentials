@@ -1,0 +1,178 @@
+Package: aws-sso-credentials
+Architecture: amd64
+Version: 0.1.0-alpha-1
+Priority: optional
+Section: utils
+Maintainer: Paul Draper <paul@getredo.com>
+Installed-Size: 6581
+Depends: libc6 (>= 2.34)
+Recommends: awscli
+Filename: pool/main/aws-sso-credentials_0.1.0-alpha_amd64.deb
+Size: 2034140
+MD5sum: d6f46c811b2fc85a62a5b95dccf2f2ef
+SHA1: 5990e8a160c74635890106a4852dbaf032b54b6c
+SHA256: c6fc2c95d93ca964cc5c70ddae56a6a364f1be9bb5d3fd2a05574b35aff4dc29
+SHA512: b5986d8816427b385303e3b75a040c4cc0017a22a2ae70f8991198ecd0c15d07c4c9f54b5aa6d6caab196794a062cd6ea2a46d871b29fb24067d0c160ae0bbc7
+Homepage: https://github.com/redoapp/aws-sso-credentials
+Description: AWS credentials_process that automatically prompts for SSO
+ # AWS SSO Credentials
+ .
+ A [`credential_process`][credprocess] that automatically invokes `aws sso
+ login`
+ when an SSO session has expired, so AWS SDKs and tools can authenticate without
+ manual re-login.
+ .
+ ## Installation
+ .
+ ### Homebrew (macOS / Linux)
+ .
+ The repo isn't named `homebrew-*`, so add the tap with an explicit URL the
+ first
+ time:
+ .
+ ```sh
+ brew tap redoapp/aws-sso-credentials
+ https://github.com/redoapp/aws-sso-credentials
+ brew install redoapp/aws-sso-credentials/aws-sso-credentials
+ ```
+ .
+ A pre-built binary for your OS/arch is fetched from the GitHub Release; no Rust
+ toolchain required. For a source build off `main`, append `--HEAD`.
+ .
+ ### APT (Debian / Ubuntu)
+ .
+ ```sh
+ echo "deb [trusted=yes] https://redoapp.github.io/aws-sso-credentials/apt
+ stable main" \
+   | sudo tee /etc/apt/sources.list.d/redo.list
+ sudo apt-get update
+ sudo apt-get install aws-sso-credentials
+ ```
+ .
+ The repo is unsigned; integrity relies on HTTPS to GitHub Pages.
+ .
+ ### YUM / DNF (Fedora / RHEL / Amazon Linux)
+ .
+ ```sh
+ sudo curl -fsSL -o /etc/yum.repos.d/redo.repo \
+   https://redoapp.github.io/aws-sso-credentials/yum/redo.repo
+ sudo dnf install aws-sso-credentials   # or: sudo yum install
+ ```
+ .
+ ### Nix
+ .
+ ```sh
+ nix profile install github:redoapp/aws-sso-credentials
+ # or, ad hoc
+ nix run github:redoapp/aws-sso-credentials -- --profile default
+ ```
+ .
+ ### Pre-built binary
+ .
+ Download a tarball for your platform from the
+ [releases page](https://github.com/redoapp/aws-sso-credentials/releases) and
+ place `aws-sso-credentials` somewhere on your `PATH`.
+ .
+ ## Releasing
+ .
+ Releases are driven by tag pushes:
+ .
+ ```sh
+ # bump version in Cargo.toml, commit
+ git tag v0.2.0
+ git push origin v0.2.0
+ ```
+ .
+ The [`release`](.github/workflows/release.yaml) workflow then:
+ .
+ 1. Builds binaries, `.deb`, and `.rpm` for Linux x86_64/aarch64 and macOS
+    x86_64/aarch64.
+ 2. Creates a GitHub Release with all assets and a `SHA256SUMS` file.
+ 3. Rewrites the per-platform `url`/`sha256` pairs in
+    [`Formula/aws-sso-credentials.rb`](Formula/aws-sso-credentials.rb) and
+    commits to `main`.
+ 4. Publishes APT and YUM repositories to the `gh-pages` branch.
+ 5. Verifies the Nix flake builds cleanly.
+ .
+ ### One-time repo setup
+ .
+ - **GitHub Pages**: Settings → Pages → Source = "Deploy from a branch",
+ Branch =
+   `gh-pages` / `/`.
+ - **Workflow write permissions**: Settings → Actions → General → Workflow
+   permissions = "Read and write permissions" (needed to push the formula update
+   commit and the `gh-pages` branch).
+ .
+ ## Usage
+ .
+ Add `credential_process` to the profile that already has your SSO config:
+ .
+ ```ini
+ [sso-session sso]
+ sso_start_url = https://example.awsapps.com/start/
+ sso_region = us-east-1
+ .
+ [default]
+ credential_process = aws-sso-credentials
+ sso_session = sso
+ sso_account_id = 123456789012
+ sso_role_name = Developer
+ ```
+ .
+ Then use the profile as normal — `aws s3 ls`, `terraform plan`, anything that
+ goes through an AWS SDK.
+ .
+ Only one `aws sso login` invocation will be executed concurrently, within the
+ timeout (15s).
+ .
+ ### Command line
+ .
+ ```
+ aws-sso-credentials [--profile <name>] [-- <extra args for aws sso login>...]
+ ```
+ .
+ Anything after `--` is forwarded verbatim to `aws sso login`, e.g.
+ `aws-sso-credentials --profile dev -- --no-browser`.
+ .
+ `AWS_CONFIG_FILE` and `AWS_SHARED_CREDENTIALS_FILE` are respected.
+ .
+ ## Behavior
+ .
+ ### Cache
+ .
+ Credentials are cached on disk at `~/.aws/sso-credentials/cache/<profile>.json`
+ (mode `0600`) until they expire. The AWS CLI's own SSO token cache at
+ `~/.aws/sso/cache/` is reused for the underlying access token.
+ .
+ ### Login coordination
+ .
+ Concurrent invocations for the same SSO session coordinate through a lock file
+ in the system temp directory keyed by `sso_session` (or `sso_start_url` for
+ legacy profiles), so two profiles sharing a session do not race on
+ `aws sso login`. Unrelated sessions do not block each other.
+ .
+ ### Configuration keys
+ .
+ The following keys are read from `~/.aws/config`:
+ .
+ - On the `[profile …]` section: `sso_account_id`, `sso_role_name`,
+   `sso_session`. For legacy (pre-`sso-session`) profiles, `sso_start_url` and
+   `sso_region` may live here instead.
+ - On the `[sso-session …]` section: `sso_start_url`, `sso_region`,
+   `sso_registration_scopes`. Scopes are consumed by `aws sso login` directly
+   from the config file.
+ .
+ ## Limitations
+ .
+ - Windows is untested.
+ .
+ [credprocess]:
+   https://docs.aws.amazon.com/sdkref/latest/guide/feature-process-credentials.html
+ .
+ ## License
+ .
+ MIT. Copyright © Redo Tech, Inc.
+ .
+ AWS is a trademark of Amazon.com, Inc. or its affiliates. This project is
+ independent and is not affiliated with, endorsed, or sponsored by Amazon.
+

@@ -1,5 +1,0 @@
-[redo]
-name=Redo
-baseurl=https://redoapp.github.io/aws-sso-credentials/yum
-enabled=1
-gpgcheck=0

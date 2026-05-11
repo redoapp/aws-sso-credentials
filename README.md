@@ -50,7 +50,11 @@ place `aws-sso-credentials` on your `PATH`.
 
 ## Usage
 
-Add `credential_process` to the profile that already has your SSO config:
+Split your SSO config into two profiles: one holds `credential_process` only,
+the other holds the SSO fields that `aws-sso-credentials` reads. AWS CLI v2's
+credential provider chain prefers its built-in SSO provider over
+`credential_process` when both live on the same profile — so they have to be
+separate.
 
 ```ini
 [sso-session sso]
@@ -58,17 +62,16 @@ sso_start_url = https://example.awsapps.com/start/
 sso_region = us-east-1
 
 [default]
-credential_process = aws-sso-credentials
+credential_process = aws-sso-credentials --profile default-sso
+
+[profile default-sso]
 sso_session = sso
 sso_account_id = 123456789012
 sso_role_name = Developer
 ```
 
-Then use the profile as normal — `aws s3 ls`, `terraform plan`, anything that
-goes through an AWS SDK.
-
-Only one `aws sso login` invocation will be executed concurrently, within the
-timeout (15s).
+Use `[default]` (or whichever consumer profile) as normal — `aws s3 ls`,
+`terraform plan`, anything that goes through an AWS SDK.
 
 ### Command line
 
@@ -95,6 +98,10 @@ Concurrent invocations for the same SSO session coordinate through a lock file
 in the system temp directory keyed by `sso_session` (or `sso_start_url` for
 legacy profiles), so two profiles sharing a session do not race on
 `aws sso login`. Unrelated sessions do not block each other.
+
+If an `aws sso login` has held the lock for more than 30 seconds, a newly
+arriving invocation takes over and starts its own login rather than waiting
+indefinitely. Invocations that were already waiting stick with the original.
 
 ### Configuration keys
 

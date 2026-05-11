@@ -25,9 +25,7 @@ jobs:
           tool: cross
       - if: matrix.deb_arch
         name: Install cargo-deb and cargo-generate-rpm
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-deb,cargo-generate-rpm
+        run: cargo install cargo-deb cargo-generate-rpm --locked
       - run: scripts/build.sh
       - env:
           VERSION: ${{ steps.version.outputs.version }}

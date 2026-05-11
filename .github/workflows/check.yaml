@@ -1,0 +1,39 @@
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          node-version: lts/*
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec prettier --check .
+  rust:
+    name: Rust
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+  shell:
+    name: Shell
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: shellcheck scripts/*.sh
+name: Check
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read

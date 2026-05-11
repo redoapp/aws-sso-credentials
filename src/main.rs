@@ -97,7 +97,12 @@ async fn main() {
     }
 
     let lock_path = lock_path(&config);
-    let lock_file = match OpenOptions::new().create(true).write(true).open(&lock_path) {
+    let lock_file = match OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(false)
+        .open(&lock_path)
+    {
         Ok(f) => f,
         Err(e) => {
             eprintln!(
@@ -170,10 +175,7 @@ fn emit(creds: &cache::Credentials) {
 }
 
 fn lock_path(config: &SsoConfig) -> PathBuf {
-    let key = config
-        .session_name
-        .as_deref()
-        .unwrap_or(&config.start_url);
+    let key = config.session_name.as_deref().unwrap_or(&config.start_url);
     let sanitized: String = key
         .chars()
         .map(|c| {

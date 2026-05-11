@@ -10,8 +10,8 @@ AWS SDKs and tools can authenticate without manual re-login.
 ### Homebrew
 
 ```sh
-brew tap aws-sso-credentials https://github.com/redoapp/aws-sso-credentials
-brew install aws-sso-credentials/aws-sso-credentials
+brew tap redoapp/aws-sso-credentials https://github.com/redoapp/aws-sso-credentials
+brew install redoapp/aws-sso-credentials/aws-sso-credentials
 ```
 
 A pre-built binary for your OS/arch is fetched from the GitHub Release; no Rust

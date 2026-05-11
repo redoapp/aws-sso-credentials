@@ -111,7 +111,9 @@ jobs:
           path: dist
       - name: Install repo tools
         run: scripts/install-repo-tools.sh
-      - name: Check out gh-pages
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Check out gh-pages
         run: scripts/checkout-gh-pages.sh
       - name: Assemble APT repo
         run: scripts/build-apt-repo.sh

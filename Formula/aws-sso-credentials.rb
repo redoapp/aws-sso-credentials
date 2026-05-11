@@ -7,20 +7,20 @@ class AwsSsoCredentials < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-aarch64-apple-darwin.tar.gz"
-      sha256 "4a97ee7ceac92893c94d40ea0ee6956bcccb4eb6175a14375f8564a17213f724"
+      sha256 "5cf1fc2419734b189fdfcfb80097318417559a4653a38d2928ec9d709ac057c2"
     else
       url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-x86_64-apple-darwin.tar.gz"
-      sha256 "992bc590705eb7be6db60f641b280cbabacfc841432988f2cd14066f48c85e71"
+      sha256 "fa21c693e1b6175a2769b564b3ed4162b1810073a0f2599ea348845da3e43a40"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "38942b2f7a3849abdc7c4963f7fc409bc9aba5fc1c8bbb090804fa840fac35f3"
+      sha256 "f8dcc93a88ee006d186c5d546ab96831e2f1775f2c93e5e7968e09c7b05a30a7"
     else
       url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "7e5cc60d15c420277bdcd1a9743dc8a5bbcdf4e59163c4b3b484d49767cb715c"
+      sha256 "1dd2f59871292540c8fbf49f805c55d325243058748d66f09cc628b4d15b48ed"
     end
   end
 

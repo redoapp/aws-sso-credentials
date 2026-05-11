@@ -1,26 +1,26 @@
 class AwsSsoCredentials < Formula
   desc "AWS credentials_process that automatically prompts for SSO"
   homepage "https://github.com/redoapp/aws-sso-credentials"
-  version "0.1.0-alpha"
+  version "0.1.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-aarch64-apple-darwin.tar.gz"
-      sha256 "5cf1fc2419734b189fdfcfb80097318417559a4653a38d2928ec9d709ac057c2"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-aarch64-apple-darwin.tar.gz"
+      sha256 "388f9687449772901d6bfbc443b1b7bc07e6ee8346c9e6a9130ba5d3e7a6032a"
     else
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-x86_64-apple-darwin.tar.gz"
-      sha256 "fa21c693e1b6175a2769b564b3ed4162b1810073a0f2599ea348845da3e43a40"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-x86_64-apple-darwin.tar.gz"
+      sha256 "c734edf4dc96d830d2d330c10464732128580fffc4302a66352bb1572d27805d"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "f8dcc93a88ee006d186c5d546ab96831e2f1775f2c93e5e7968e09c7b05a30a7"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "521b70b1d3ea07c39d67541091d35b5cec23be548cfa5d208dd054f2569f491f"
     else
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0-alpha/aws-sso-credentials-0.1.0-alpha-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "1dd2f59871292540c8fbf49f805c55d325243058748d66f09cc628b4d15b48ed"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "4683c7b28e3ab5fbded087f35f9ae099f4b425322a82bea6e0b88b02fe1ef6ab"
     end
   end
 

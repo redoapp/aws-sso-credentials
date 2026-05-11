@@ -1,6 +1,6 @@
 [package]
 name = "aws-sso-credentials"
-version = "0.1.0-alpha"
+version = "0.1.0"
 edition = "2024"
 description = "AWS credentials_process that automatically prompts for SSO"
 license = "MIT"

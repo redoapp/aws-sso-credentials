@@ -1,26 +1,26 @@
 class AwsSsoCredentials < Formula
   desc "AWS credentials_process that automatically prompts for SSO"
   homepage "https://github.com/redoapp/aws-sso-credentials"
-  version "0.1.0"
+  version "0.2.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-aarch64-apple-darwin.tar.gz"
-      sha256 "388f9687449772901d6bfbc443b1b7bc07e6ee8346c9e6a9130ba5d3e7a6032a"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.2.0/aws-sso-credentials-0.2.0-aarch64-apple-darwin.tar.gz"
+      sha256 "d799d57ecb22497fbd8c66b4df5215c2e5a3cef0a38dd07818c2a5b89d972070"
     else
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-x86_64-apple-darwin.tar.gz"
-      sha256 "c734edf4dc96d830d2d330c10464732128580fffc4302a66352bb1572d27805d"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.2.0/aws-sso-credentials-0.2.0-x86_64-apple-darwin.tar.gz"
+      sha256 "14cd5288174c15e8a1b0acda11f1aef870714eb777194758266010f3d68376f0"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "521b70b1d3ea07c39d67541091d35b5cec23be548cfa5d208dd054f2569f491f"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.2.0/aws-sso-credentials-0.2.0-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "6c4d932b85323ab2338434115f810907ad1e3fad95df789c0abf81b0fc8172c6"
     else
-      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.1.0/aws-sso-credentials-0.1.0-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "4683c7b28e3ab5fbded087f35f9ae099f4b425322a82bea6e0b88b02fe1ef6ab"
+      url "https://github.com/redoapp/aws-sso-credentials/releases/download/v0.2.0/aws-sso-credentials-0.2.0-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "b16d0925ae38cc62e6e4806288262521fa4eba07f5a2c02169fbcf27bdd44a7b"
     end
   end
 

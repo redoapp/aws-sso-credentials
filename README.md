@@ -1,15 +1,13 @@
 # AWS SSO Credentials
 
-A [`credential_process`][credprocess] that automatically invokes `aws sso login`
-when an SSO session has expired, so AWS SDKs and tools can authenticate without
-manual re-login.
+A
+[`credential_process`](https://docs.aws.amazon.com/sdkref/latest/guide/feature-process-credentials.html)
+that automatically invokes `aws sso login` when an SSO session has expired, so
+AWS SDKs and tools can authenticate without manual re-login.
 
 ## Installation
 
-### Homebrew (macOS / Linux)
-
-The repo isn't named `homebrew-*`, so add the tap with an explicit URL the first
-time:
+### Homebrew
 
 ```sh
 brew tap redoapp/aws-sso-credentials https://github.com/redoapp/aws-sso-credentials
@@ -17,24 +15,22 @@ brew install redoapp/aws-sso-credentials/aws-sso-credentials
 ```
 
 A pre-built binary for your OS/arch is fetched from the GitHub Release; no Rust
-toolchain required. For a source build off `main`, append `--HEAD`.
+toolchain required.
 
-### APT (Debian / Ubuntu)
+### APT
 
 ```sh
 echo "deb [trusted=yes] https://redoapp.github.io/aws-sso-credentials/apt stable main" \
-  | sudo tee /etc/apt/sources.list.d/redo.list
+  | sudo tee /etc/apt/sources.list.d/aws-sso-credentials.list
 sudo apt-get update
 sudo apt-get install aws-sso-credentials
 ```
 
-The repo is unsigned; integrity relies on HTTPS to GitHub Pages.
-
-### YUM / DNF (Fedora / RHEL / Amazon Linux)
+### YUM
 
 ```sh
-sudo curl -fsSL -o /etc/yum.repos.d/redo.repo \
-  https://redoapp.github.io/aws-sso-credentials/yum/redo.repo
+sudo curl -fsSL -o /etc/yum.repos.d/aws-sso-credentials.repo \
+  https://redoapp.github.io/aws-sso-credentials/yum/aws-sso-credentials.repo
 sudo dnf install aws-sso-credentials   # or: sudo yum install
 ```
 
@@ -50,36 +46,7 @@ nix run github:redoapp/aws-sso-credentials -- --profile default
 
 Download a tarball for your platform from the
 [releases page](https://github.com/redoapp/aws-sso-credentials/releases) and
-place `aws-sso-credentials` somewhere on your `PATH`.
-
-## Releasing
-
-Releases are driven by tag pushes:
-
-```sh
-# bump version in Cargo.toml, commit
-git tag v0.2.0
-git push origin v0.2.0
-```
-
-The [`release`](.github/workflows/release.yaml) workflow then:
-
-1. Builds binaries, `.deb`, and `.rpm` for Linux x86_64/aarch64 and macOS
-   x86_64/aarch64.
-2. Creates a GitHub Release with all assets and a `SHA256SUMS` file.
-3. Rewrites the per-platform `url`/`sha256` pairs in
-   [`Formula/aws-sso-credentials.rb`](Formula/aws-sso-credentials.rb) and
-   commits to `main`.
-4. Publishes APT and YUM repositories to the `gh-pages` branch.
-5. Verifies the Nix flake builds cleanly.
-
-### One-time repo setup
-
-- **GitHub Pages**: Settings → Pages → Source = "Deploy from a branch", Branch =
-  `gh-pages` / `/`.
-- **Workflow write permissions**: Settings → Actions → General → Workflow
-  permissions = "Read and write permissions" (needed to push the formula update
-  commit and the `gh-pages` branch).
+place `aws-sso-credentials` on your `PATH`.
 
 ## Usage
 
@@ -143,9 +110,6 @@ The following keys are read from `~/.aws/config`:
 ## Limitations
 
 - Windows is untested.
-
-[credprocess]:
-  https://docs.aws.amazon.com/sdkref/latest/guide/feature-process-credentials.html
 
 ## License
 

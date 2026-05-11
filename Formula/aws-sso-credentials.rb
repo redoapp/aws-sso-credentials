@@ -29,14 +29,19 @@ class AwsSsoCredentials < Formula
     depends_on "rust" => :build
   end
 
-  depends_on "awscli"
-
   def install
     if build.head?
       system "cargo", "install", *std_cargo_args
     else
       bin.install "aws-sso-credentials"
     end
+  end
+
+  def caveats
+    <<~EOS
+      aws-sso-credentials shells out to `aws sso login`. Make sure the AWS CLI
+      is installed and on your PATH (e.g. `brew install awscli`).
+    EOS
   end
 
   test do

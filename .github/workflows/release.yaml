@@ -119,8 +119,6 @@ jobs:
         run: scripts/build-apt-repo.sh
       - name: Assemble YUM repo
         run: scripts/build-yum-repo.sh
-      - name: Write landing page
-        run: scripts/write-pages-index.sh
       - env:
           VERSION: ${{ needs.release.outputs.version }}
         name: Commit and push gh-pages

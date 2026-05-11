@@ -37,11 +37,3 @@ nix build                                # verify the flake
 The workflow then builds binaries (Linux x86_64/aarch64, macOS x86_64/aarch64),
 publishes a GitHub Release, rewrites the Homebrew formula on `main`, and pushes
 the APT/YUM repos to `gh-pages`.
-
-### One-time repo setup
-
-- **GitHub Pages**: Settings → Pages → Source = "Deploy from a branch", Branch =
-  `gh-pages` / `/`.
-- **Workflow write permissions**: Settings → Actions → General → Workflow
-  permissions = "Read and write permissions" (needed to push the formula update
-  commit and the `gh-pages` branch).

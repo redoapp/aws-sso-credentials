@@ -27,7 +27,7 @@ codegen-units = 1
 maintainer = "Paul Draper <paul@getredo.com>"
 section = "utils"
 priority = "optional"
-recommends = "awscli"
+suggests = "awscli"
 assets = [
     ["target/release/aws-sso-credentials", "usr/bin/", "755"],
     ["README.md", "usr/share/doc/aws-sso-credentials/README.md", "644"],

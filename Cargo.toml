@@ -24,7 +24,7 @@ strip = true
 codegen-units = 1
 
 [package.metadata.deb]
-maintainer = "Paul Draper <paul@getredo.com>"
+maintainer = "Redo Engineering <engineering@redo.com>"
 section = "utils"
 priority = "optional"
 suggests = "awscli"

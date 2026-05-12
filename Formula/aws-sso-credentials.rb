@@ -1,5 +1,5 @@
 class AwsSsoCredentials < Formula
-  desc "AWS credentials_process that automatically prompts for SSO"
+  desc "AWS credentials process that automatically prompts SSO"
   homepage "https://github.com/redoapp/aws-sso-credentials"
   version "0.2.0"
   license "MIT"

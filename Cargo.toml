@@ -2,7 +2,7 @@
 name = "aws-sso-credentials"
 version = "0.2.0"
 edition = "2024"
-description = "AWS credentials_process that automatically prompts for SSO"
+description = "AWS credentials process that automatically prompts SSO"
 license = "MIT"
 repository = "https://github.com/redoapp/aws-sso-credentials"
 readme = "README.md"

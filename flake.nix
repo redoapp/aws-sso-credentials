@@ -1,5 +1,5 @@
 {
-  description = "AWS credentials_process that automatically prompts for SSO";
+  description = "AWS credentials process that automatically prompts SSO";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
